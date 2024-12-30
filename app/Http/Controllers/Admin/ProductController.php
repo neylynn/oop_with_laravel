@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use App\Models\Admin\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -32,7 +33,18 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->except('_token'));
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public'); // Save to 'storage/app/public/products'
+        }
+        Product::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'sku' => $request->sku,
+            'price' => $request->price,
+            'category_id' => $request->category_id,
+            'image' => $imagePath,
+        ]);
         return redirect()->route('product.index')->with('success', 'Product created successfully!');
     }
 
@@ -41,7 +53,8 @@ class ProductController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = Product::findOrFail($id);
+        return view('admin.product.show', compact('product'));
     }
 
     /**
@@ -59,14 +72,42 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         $product = Product::findOrFail($id);
-        $product->update([
-            'name' => $request->name,
-            'description' => $request->description,
-            'sku' => $request->sku,
-            'price' => $request->price,
-            'category_id' => $request->category_id,
-        ]);
+        $product->name = $request->name;
+        $product->description = $request->description;
+        $product->sku = $request->sku;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
 
+        // Handle image upload
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($product->image) {
+                Storage::delete('public/' . $product->image);
+            }
+
+            // Store the new image and get its path
+            $imagePath = $request->file('image')->store('products', 'public');
+            $product->image = $imagePath;
+        }
+
+        $product->save();
+        // $imagePath = null;
+        // if ($request->hasFile('image')) {
+        //     // Delete the old image if it exists
+        //     if ($product->image) {
+        //         Storage::delete('public/' . $product->image);
+        //     }
+        //     // Store the new image and get its path
+        //     $imagePath = $request->file('image')->store('products', 'public');
+        // }
+        // $product->update([
+        //     'name' => $request->name,
+        //     'description' => $request->description,
+        //     'sku' => $request->sku,
+        //     'price' => $request->price,
+        //     'category_id' => $request->category_id,
+        //     'image' => $imagePath
+        // ]);
         return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 

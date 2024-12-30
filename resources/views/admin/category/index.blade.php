@@ -28,7 +28,8 @@
                 <td>{{ $category->description }}</td>
                 <td>{{ $category->parent ? $category->parent->name : 'No Parent' }}</td>
                 <td>
-                  <a href="{{ route('category.edit', $category->id) }}" class="btn btn-success mt-2 mb-2">Edit</a>
+                  <a href="{{ route('category.show', $category->id) }}" class="btn btn-success mt-2 mb-2">View</a>
+                  <a href="{{ route('category.edit', $category->id) }}" class="btn btn-warning mt-2 mb-2">Edit</a>
                   <form action="{{ route('category.destroy', $category->id) }}" method="POST" style="display:inline-block;">
                       @csrf
                       @method('DELETE')

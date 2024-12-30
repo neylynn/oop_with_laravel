@@ -13,13 +13,13 @@ return new class extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Name of the category
-            $table->string('slug')->unique()->nullable(); // URL-friendly identifier for the category
-            $table->text('description')->nullable(); // Description of the category
+            $table->string('name'); 
+            $table->string('slug')->unique()->nullable(); 
+            $table->text('description')->nullable(); 
             $table->unsignedBigInteger('parent_id')->nullable(); // Parent category for nested categories
-            $table->integer('order')->default(0); // Display order
-            $table->boolean('is_active')->default(true); // Whether the category is active
-            $table->timestamps(); // Created at and updated at
+            $table->integer('order')->default(0);
+            $table->boolean('is_active')->default(true); 
+            $table->timestamps(); 
             $table->foreign('parent_id')->references('id')->on('categories')->onDelete('cascade'); // Self-referencing foreign key
         });
     }

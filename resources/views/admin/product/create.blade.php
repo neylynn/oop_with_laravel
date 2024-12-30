@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content_body')
-<form action="{{ route('product.store') }}" method="post">
+<form action="{{ route('product.store') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-row">
         <div class="form-group col-md-6 mt-4">
@@ -27,6 +27,10 @@
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="image">Product Image</label>
+            <input type="file" class="form-control" id="image" name="image" accept="image/*">
         </div>
     </div>
     <button type="submit" class="btn btn-primary mt-2">Save</button>

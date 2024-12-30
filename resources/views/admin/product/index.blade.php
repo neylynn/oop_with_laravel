@@ -16,6 +16,7 @@
       <th>SKU</th>
       <th>Price</th>
       <th>Category Name</th>
+      <th>Image</th>
       <th>Action</th>
     </tr>
   </thead>
@@ -30,7 +31,15 @@
                 <td>{{ $product->price }}</td>
                 <td>{{ $product->category->name }}</td>
                 <td>
-                  <a href="{{ route('product.edit', $product->id) }}" class="btn btn-success mt-2 mb-2">Edit</a>
+                    @if ($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}" style="width:150px; height:80px;" class="img-fluid rounded-start" alt="{{ $product->name }}">
+                    @else
+                        <img src="{{ asset('images/placeholder.png') }}" class="img-fluid rounded-start" alt="No Image Available">
+                    @endif
+                </td>
+                <td>
+                  <a href="{{ route('product.show', $product->id) }}" class="btn btn-success mt-2 mb-2">View</a>
+                  <a href="{{ route('product.edit', $product->id) }}" class="btn btn-warning mt-2 mb-2">Edit</a>
                   <form action="{{ route('product.destroy', $product->id) }}" method="POST" style="display:inline-block;">
                       @csrf
                       @method('DELETE')
