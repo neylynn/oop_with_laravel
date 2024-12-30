@@ -77,37 +77,14 @@ class ProductController extends Controller
         $product->sku = $request->sku;
         $product->price = $request->price;
         $product->category_id = $request->category_id;
-
-        // Handle image upload
         if ($request->hasFile('image')) {
-            // Delete the old image if it exists
             if ($product->image) {
                 Storage::delete('public/' . $product->image);
             }
-
-            // Store the new image and get its path
             $imagePath = $request->file('image')->store('products', 'public');
             $product->image = $imagePath;
         }
-
         $product->save();
-        // $imagePath = null;
-        // if ($request->hasFile('image')) {
-        //     // Delete the old image if it exists
-        //     if ($product->image) {
-        //         Storage::delete('public/' . $product->image);
-        //     }
-        //     // Store the new image and get its path
-        //     $imagePath = $request->file('image')->store('products', 'public');
-        // }
-        // $product->update([
-        //     'name' => $request->name,
-        //     'description' => $request->description,
-        //     'sku' => $request->sku,
-        //     'price' => $request->price,
-        //     'category_id' => $request->category_id,
-        //     'image' => $imagePath
-        // ]);
         return redirect()->route('product.index')->with('success', 'Product updated successfully');
     }
 

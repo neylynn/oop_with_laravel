@@ -65,7 +65,6 @@ class CategoryController extends Controller
             'description' => $request->description,
             'parent_id' => $request->parent_category,
         ]);
-
         return redirect()->route('category.index')->with('success', 'Category updated successfully');
     }
 
