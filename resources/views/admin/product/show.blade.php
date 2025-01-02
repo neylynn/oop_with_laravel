@@ -19,7 +19,7 @@
             <input type="number" class="form-control" id="price" name="price" value="{{ $product->price }}" disabled>
         </div>
         <div class="form-group col-md-6">
-            <label for="category_id">Category ID</label>
+            <label for="category_id">Category Name</label>
             <input type="text" class="form-control" id="category_id" name="category_id" value="{{ $product->category->name }}" disabled>
         </div>
         <div class="form-group col-md-6">

@@ -15,7 +15,7 @@
             <input type="text" class="form-control" id="description" name="description" value="{{ $category->description }}" disabled>
         </div>
         <div class="form-group col-md-6">
-            <label for="parent_id">Parent ID</label>
+            <label for="parent_id">Parent Name</label>
             <input type="text" class="form-control" id="parent_id" name="parent_id" value="{{ $category->parent ? $category->parent->name : 'No Parent' }}" disabled>
         </div>
     </div>
